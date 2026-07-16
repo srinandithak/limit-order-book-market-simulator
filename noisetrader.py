@@ -1,3 +1,5 @@
+import random
+
 class NoiseTrader:
     def __init__(self, book, std_dev, fallback_price=100.0, qty_range=(1, 50)):
         self.book = book
@@ -5,6 +7,7 @@ class NoiseTrader:
         self.qty_range = qty_range
         self.last_mid = fallback_price  # only used before the book ever has a price
         self.history = []
+
     def step(self):
         # Update last_mid only if the book currently has a real mid-price
         current_mid = self.book.mid_price()
