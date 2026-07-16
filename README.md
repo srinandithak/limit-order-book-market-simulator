@@ -9,7 +9,7 @@ This project simulates a simplified financial market:
 - **`orderbook.py`** — A limit order book implementing price-time priority matching. Bids are stored in a max-heap, asks in a min-heap, with lazy deletion for cancelled/filled orders. Tracks both best bid/ask (`mid_price()`) and the price of the most recent actual trade (`last_trade_price()`).
 - **`noisetrader.py`** — Simulates random market activity. Places orders around the last known trade price with Gaussian noise, and immediately cancels anything that doesn't fill — modeling a market order rather than a resting quote.
 - **`marketmaker.py`** — Quotes a bid/ask spread around the current price every step. Skews its quotes based on current inventory (using a `tanh` function) to discourage further accumulation in one direction, and to manage inventory risk over time.
-- **`simulation.py`** — Runs the full simulation loop, printing inventory, cash, and PnL at intervals.
+- **`simulation.py`** — Runs the full simulation loop, printing inventory, cash, and PnL at intervals. Plots inventory and PnL changes each step.
 
 ## How it works
 
