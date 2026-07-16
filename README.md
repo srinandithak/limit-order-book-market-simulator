@@ -20,12 +20,6 @@ Each simulation step:
 
 PnL is calculated as `cash + inventory * mid_price` — combining realized cash from trades with the mark-to-market value of any open inventory position.
 
-## Key design decisions (and bugs fixed along the way)
-
-- **Mid-price vs. last trade price:** Early versions computed "mid price" from the best resting bid/ask. This created a feedback loop, since the market maker's own quotes were usually the best price in the book — meaning its reference price was really just its own last quote. Fixed by tracking the price of the last *actual trade* separately, and using that as the reference price for both the noise trader and market maker.
-- **Stale resting orders:** The noise trader originally left unfilled orders resting in the book indefinitely. Over time, these stale orders accumulated and sat at the top of book, blocking the market maker's fresh quotes from ever being reached by new incoming orders — causing the market maker to stop trading entirely after enough steps. Fixed by having the noise trader cancel any unfilled remainder of its order immediately (execute-or-cancel behavior), so only the market maker's live quotes ever rest in the book.
-- **Inventory skew sizing:** With large order sizes, a single fill could push inventory most of the way up the `tanh` skew curve in one step, leaving little room for gradual course correction. Reducing per-order quantity relative to the skew's `scale` parameter allowed inventory to be corrected incrementally rather than swinging to extremes.
-
 ## Results
 
 With tuned parameters (tight spread, moderate noise volatility, and a smaller per-order quantity relative to the skew scale), the market maker's inventory oscillates around zero rather than running away, and PnL trends upward over time — evidence that the inventory-skewing strategy is compensating the market maker for the risk it takes on.
