@@ -23,7 +23,8 @@ PnL is calculated as `cash + inventory * mid_price` — combining realized cash 
 ## Results
 
 With tuned parameters (tight spread, moderate noise volatility, and a smaller per-order quantity relative to the skew scale), the market maker's inventory oscillates around zero rather than running away, and PnL trends upward over time — evidence that the inventory-skewing strategy is compensating the market maker for the risk it takes on.
-Sample Run:
+
+### Sample Run:
 <img width="1400" height="841" alt="image" src="https://github.com/user-attachments/assets/547672fb-8278-4bfd-8364-a51d7e0bd235" />
 
 
