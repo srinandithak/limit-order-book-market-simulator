@@ -9,12 +9,11 @@ class NoiseTrader:
         self.history = []
 
     def step(self):
-        # Update last_mid only if the book currently has a real mid-price
-        current_mid = self.book.mid_price()
+        current_mid = self.book.last_trade_price()
         if current_mid is not None:
             self.last_mid = current_mid
 
-        ref_price = self.last_mid  # always use the most recent known price
+        ref_price = self.last_mid
         mid_before = ref_price
 
         side = random.choice(["buy", "sell"])
@@ -23,7 +22,11 @@ class NoiseTrader:
         quantity = random.randint(*self.qty_range)
 
         order_id, fills = self.book.add_limit_order(side, round(price, 2), quantity)
+
+
+        self.book.cancel_order(order_id)
+
         mid_after = self.book.mid_price()
         self.history.append((mid_before, mid_after))
-        
+
         return order_id, fills

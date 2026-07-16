@@ -36,6 +36,7 @@ class OrderBook:
         self.orders = {} # order_id -> Order
         self._id_counter = itertools.count(1)
         self._clock = itertools.count(1)  # simple integer "timestamps"
+        self.last_trade = None
 
     def _next_id(self):
         return next(self._id_counter)
@@ -103,6 +104,9 @@ class OrderBook:
         if incoming.quantity <= 0:
             incoming.active = False
 
+        if fills:
+            self.last_trade, _ = fills[-1] 
+
         return fills
 
     def cancel_order(self, order_id):
@@ -135,6 +139,9 @@ class OrderBook:
         if bid is not None and ask is not None:
             return (bid + ask) / 2
         return None
+    
+    def last_trade_price(self):
+        return self.last_trade
 
     def spread(self):
         bid, ask = self.best_bid(), self.best_ask()
